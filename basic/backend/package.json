@@ -2,6 +2,7 @@
   "name": "backendbasic",
   "version": "1.0.0",
   "description": "basic backend code with exprss js",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
@@ -11,5 +12,9 @@
     "backend"
   ],
   "author": "isharweb",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0"
+  }
 }
