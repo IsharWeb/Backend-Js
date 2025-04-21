@@ -10,8 +10,9 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 // console.log(`app = ${app}`);
+app.use(express.static(path.join(__dirname, "../frontend")));
 
-app.get("/", (req, res) => {
+app.get(["/","/port","/noathe"], (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/index.html"));
     //res.send('<h1>Home Url Hellow Backend Js <h1/>')
 })

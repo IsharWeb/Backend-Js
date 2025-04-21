@@ -2,16 +2,75 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Black Background Page</title>
+  <title>Full Route-Based Website</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <h1>Welcome to My Black Page</h1>
-    <button id="clickBtn">Click Me</button>
-    <p id="message"></p>
+
+  <!-- ✅ Navbar -->
+  <nav class="navbar">
+    <div class="logo">MySite</div>
+    <div class="nav-links">
+      <a href="/">Home</a>
+      <a href="/port">Port</a>
+      <a href="/noathe">Noathe</a>
+    </div>
+  </nav>
+
+  <!-- ✅ Home Section -->
+  <div id="home" class="hidden section">
+    <h1>Welcome to the Home Page</h1>
+    <p>This is the central hub where everything begins. Learn about our services, team, and updates right here.</p>
+    <p>👇 You are currently on the Home Page 👇</p>
+    <button onclick="alert('Welcome to our site!')">Get Started</button>
   </div>
+
+  <!-- ✅ Port Section -->
+  <div id="port" class="hidden section">
+    <h1>Port Section</h1>
+    <p>Here you can find information about all the available ports and their features.</p>
+    <p>👇 You are currently on the Port Page 👇</p>
+    <div class="card-container">
+      <div class="card">
+        <h3>Port Card 1</h3>
+        <p>Details about Port 1.</p>
+      </div>
+      <div class="card">
+        <h3>Port Card 2</h3>
+        <p>Details about Port 2.</p>
+      </div>
+      <div class="card">
+        <h3>Port Card 3</h3>
+        <p>Details about Port 3.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Noathe Section -->
+  <div id="noathe" class="hidden section">
+    <h1>Noathe Area</h1>
+    <p>Find special updates, stories, and cards related to the Noathe section.</p>
+    <p>👇 You are currently on the Noathe Page 👇</p>
+    <div class="card-container">
+      <div class="card">
+        <h3>Noathe Card A</h3>
+        <p>Description of Card A.</p>
+      </div>
+      <div class="card">
+        <h3>Noathe Card B</h3>
+        <p>Description of Card B.</p>
+      </div>
+      <div class="card">
+        <h3>Noathe Card C</h3>
+        <p>Description of Card C.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Footer -->
+  <footer class="footer">
+    <p>© 2025 MySite. All rights reserved.</p>
+  </footer>
 
   <script src="script.js"></script>
 </body>
