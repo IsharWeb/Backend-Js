@@ -1,0 +1,121 @@
+/* ========== Base Styles ========== */
+body {
+    background: #000;
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 20px;
+    transition: text-shadow 0.3s ease;
+  }
+  
+  /* ========== Toggle Button ========== */
+  #styleToggleBtn {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #222;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  #styleToggleBtn:hover {
+    background-color: #444;
+  }
+  
+  /* ========== Container ========== */
+  .contianer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+    justify-content: center;
+    background-color: #f5f7fa;
+  }
+  
+  /* ========== Travel Card ========== */
+  .travel {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .travel:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .travel .title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 10px;
+  }
+  
+  .travel p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .travel p strong {
+    color: #222;
+  }
+  
+  /* ========== Responsive ========== */
+  @media (max-width: 600px) {
+    .travel {
+      width: 100%;
+    }
+  }
+  
+  /* ========== Active Theme ========== */
+  body.active {
+    background-color: #1a1a2e;
+    color: #fff;
+  }
+  
+  body.active .h1 {
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.3);
+    color: #ffcc70;
+  }
+  
+  body.active #styleToggleBtn {
+    background-color: #ffcc70;
+    color: #1a1a2e;
+  }
+  
+  body.active .contianer {
+    background-color: #111827;
+  }
+  
+  body.active .travel {
+    background-color: #1f2937;
+    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.1);
+  }
+  
+  body.active .travel .title {
+    color: #facc15;
+  }
+  
+  body.active .travel p {
+    color: #e5e7eb;
+  }
+  
+  body.active .travel p strong {
+    color: #fbbf24;
+  }
+  
