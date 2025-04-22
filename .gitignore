@@ -1,0 +1,29 @@
+# Node modules
+node_modules/
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# .env file containing sensitive data (e.g., API keys, database credentials)
+.env
+
+# Build directories for React/Vite
+/dist
+/build
+
+# Dependency directories for React/Vite
+/vite
+
+# IDEs and text editors (optional, depending on your setup)
+.vscode/
+.idea/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# SSH private keys (specifically, make sure SSH keys are ignored)
+id_rsa
+id_rsa.pub
