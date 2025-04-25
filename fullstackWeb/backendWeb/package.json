@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "i create like a youtube clone where avilble video delete uplod and cread date history login logout and more alot up fucntinaly avilbe",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node src/index.js"
   },
   "keywords": [
     "backend",
@@ -25,6 +26,7 @@
     "multer": "^1.4.5-lts.2"
   },
   "devDependencies": {
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "prettier": "^3.5.3"
   }
 }
