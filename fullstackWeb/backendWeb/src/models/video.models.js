@@ -1,4 +1,5 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import aggregatePaginate from "mongoose-aggregate-paginate-v2"
 
 const videoSchema = new mongoose.Schema(
   {
@@ -66,7 +67,25 @@ const videoSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Education", "Music", "Gaming", "Sports", "News", "Entertainment", "Other"],
+      enum: [
+        "Education",
+        "Music",
+        "Gaming",
+        "Sports",
+        "News",
+        "Entertainment",
+        "Movies",
+        "Technology",
+        "Comedy",
+        "Vlogs",
+        "Lifestyle",
+        "How-to & Style",
+        "Health & Fitness",
+        "Science & Tech",
+        "Kids",
+        "Other"
+      ],
+      
       default: "Other",
     },
     visibility: {
@@ -79,5 +98,7 @@ const videoSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+videoSchema.plugin(aggregatePaginate)
 
 export const Video = mongoose.model("Video", videoSchema);
