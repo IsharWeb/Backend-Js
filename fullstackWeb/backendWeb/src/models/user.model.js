@@ -125,4 +125,51 @@ userSchema.methods.generateRefToken = function (params) {
   )
 
 }
+
+
+
+
+
+
+// // Hash password before saving
+// userSchema.pre("save", async function (next) {
+//   if (!this.isModified("password")) return next();
+//   this.password = await bcrypt.hash(this.password, 10);
+//   next();
+// });
+
+// // Compare password
+// userSchema.methods.isPasswordCorrect = async function (password) {
+//   return await bcrypt.compare(password, this.password);
+// };
+
+// // Generate Access Token
+// userSchema.methods.generateAccToken = function () {
+//   return jwt.sign(
+//     {
+//       _id: this._id,
+//       email: this.email,
+//       username: this.username,
+//       fullName: this.fullName,
+//     },
+//     process.env.ACCESS_TOKEN_SECRET,
+//     {
+//       expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
+//     }
+//   );
+// };
+
+// // Generate Refresh Token
+// userSchema.methods.generateRefToken = function () {
+//   return jwt.sign(
+//     {
+//       _id: this._id,
+//     },
+//     process.env.REFRESH_TOKEN_SECRET,
+//     {
+//       expiresIn: process.env.REFRESH_TOKEN_EXPIRY,
+//     }
+//   );
+// };
+
 export const User = mongoose.model("User", userSchema);
