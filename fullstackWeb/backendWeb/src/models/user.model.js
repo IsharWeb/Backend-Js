@@ -30,11 +30,11 @@ const userSchema = new mongoose.Schema(
       default: "",
     },
     avatar: {
-      type: String, // URL to profile picture
+      type: String,
       default: "",
     },
     coverImage: {
-      type: String, // URL to cover/banner image
+      type: String,
       default: "",
     },
     password: {
@@ -45,6 +45,18 @@ const userSchema = new mongoose.Schema(
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
+      }
+    ],
+    watchHistory: [
+      {
+        video: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Video",
+        },
+        watchedAt: {
+          type: Date,
+          default: Date.now,
+        }
       }
     ],
     socialLinks: {
@@ -68,7 +80,7 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // createdAt and updatedAt
+    timestamps: true,
   }
 );
 
