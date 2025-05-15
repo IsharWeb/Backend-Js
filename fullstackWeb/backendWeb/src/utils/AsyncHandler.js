@@ -1,5 +1,5 @@
 
-const asyncHandler = (requstHandlerFun) => {
+const AsyncHandler = (requstHandlerFun) => {
 
     (req, res, next) => {
 
@@ -14,7 +14,7 @@ const asyncHandler = (requstHandlerFun) => {
 // short way use nested functionns
 
 // this is correct way but we need to use another
-// const asyncHandler = (fun) => async (req, res, next) => {
+// const AsyncHandler = (fun) => async (req, res, next) => {
 //     try {
 //         await fun(req, res, next)
 //     } catch (err) {
@@ -27,7 +27,7 @@ const asyncHandler = (requstHandlerFun) => {
 // }
 
 // actully function structurs like that but look diff
-// const asyncHandler = () => {
+// const AsyncHandler = () => {
 //     async (params) => {
 //         try {
 
@@ -38,4 +38,4 @@ const asyncHandler = (requstHandlerFun) => {
 // };
 
 
-export default asyncHandler
+export default AsyncHandler
