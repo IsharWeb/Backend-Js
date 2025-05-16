@@ -112,7 +112,7 @@ userSchema.methods.generateAccToken = function () {
   )
 
 }
-userSchema.methods.generateRefToken = function (params) {
+userSchema.methods.generateRefToken = function () {
 
   jwt.sign(
     {
