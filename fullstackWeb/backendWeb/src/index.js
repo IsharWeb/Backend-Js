@@ -1,7 +1,6 @@
 import dotenv from "dotenv"
 import connectDB from "./db/db.js"
 import express from "express"
-
 // dotenv.config()
 dotenv.config({
     path:"./env",
@@ -13,7 +12,8 @@ const port = process.env.PORT
 connectDB()
 .then(() => {
   app.listen(port || 3000 , () => {
-    console.log(`Mongo DB Server running on PORT = ${port}`);
+    console.log(`Mongo DB Server running on PORT =  http://localhost:5000/api/v1/user
+ ${port}`);
     
   })
 })
