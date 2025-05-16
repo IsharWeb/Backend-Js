@@ -1,7 +1,5 @@
-import {v2 as cloudinary } from "cloudinary"
-import { response } from "express"
+import { v2 as cloudinary } from "cloudinary"
 import fs from "fs"
-import { deflate } from "zlib"
 
 
 cloudinary.config({
@@ -14,16 +12,20 @@ cloudinary.config({
 
 const uploadFileOnCloudinary = async (filePath) => {
     try {
-        
-        if (!filePath) return null
 
-       const response = await cloudinary.uploader.upload(filePath , Option{
+        if (!filePath) return null
+        // upload on cloudinary
+        const response = await cloudinary.uploader.upload(filePath, {
             resource__type: "auto"
         })
         console.log("Data successfully upladed on cloudinary", response, response.url);
-        
+        return response
+
     } catch (error) {
-        fs.lutimesSync(filePath)
+        // delete
+        fs.unlinkSync(filePath)
+        return null;
+
     }
 }
 
