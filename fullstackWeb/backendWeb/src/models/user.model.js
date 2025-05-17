@@ -79,6 +79,9 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    refrashToken: {
+      type: String,
+    }
   },
   {
     timestamps: true,
