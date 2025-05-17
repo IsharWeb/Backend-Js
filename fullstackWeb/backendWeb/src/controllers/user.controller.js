@@ -24,7 +24,7 @@ const registerUser = AsyncHandler(async (req, res) => {
   }
 
   // Check esisting user
-  const existingUser = User.findOne(
+  const existingUser = await User.findOne(
     {
       $or: [{ username }, { email }]
     }
@@ -35,9 +35,12 @@ const registerUser = AsyncHandler(async (req, res) => {
 
   // Check img was upload or not
   const avtarLocalPath = req.files?.avatar[0]?.path;
-  console.log("Avtar Img url", avtarLocalPath);
+  console.log("Avtar Img url adn all datat files = ", files, avtarLocalPath);
   const coverImageLocalPath = req.files?.coverImage[0]?.path;
   console.log("Avatar Img url", coverImageLocalPath);
+  // if (coverImageLocalPath.length === "")              
+  //  chatgpt pls write code here if cover img is undefind or user nor upload to not show error and add in userstore coverimg emty string
+
 
   if (!avtarLocalPath) throw new ApiError(400, "Avatar Img is requird")
 
@@ -56,6 +59,9 @@ const registerUser = AsyncHandler(async (req, res) => {
       password,
     }
   )
+  console.log("User data or UserStore = ", userStore);
+
+
   // find user and reove -password -refrashToken
   const findUser = await User.findById(userStore._id).select(
     "-password -refrashToken"
@@ -70,9 +76,10 @@ const registerUser = AsyncHandler(async (req, res) => {
     // my err
     // new ApiResponse(userStore, 200, "User Register succesfully" )
     // throw new ApiResponse(findUser, 200, "User Register succesfully" )
+
   )
 
-return response
+  return response
 
   //   if (!name || !email || !password) {
   //     return res.status(400).json({ message: "All fields are required" });
