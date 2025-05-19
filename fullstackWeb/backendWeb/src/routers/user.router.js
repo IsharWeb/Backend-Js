@@ -5,10 +5,10 @@ import { upload } from "../middlwares/multer.middlware.js";
 const router = Router();
 
 router.route("/register").post(
-    upload.fields[
+    upload.fields([
     { name: "avatar", maxCount: 1 }
     , { name: "coverImage", maxCount: 1 }
-    ]
+    ])
     , registerUser
 );
 
@@ -20,4 +20,9 @@ router.route("/register").post(
 // router.route("/login").post(
 //     console.log('kjkkkkkkkkkkkkkkkkkjjjjjjjjjjjjj',nm)
 // );
+// router.route("/login").post((req, res) => {
+//     console.log("Login route hit");
+//     res.send("Login test");
+//   });
+  
 export default router; 
