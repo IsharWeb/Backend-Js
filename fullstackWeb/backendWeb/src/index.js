@@ -20,8 +20,6 @@ connectDB()
 .catch((err) => {
 console.log("Mongo DB Express connection errr !!!", err);
 throw err;
-
-
 })
 
 

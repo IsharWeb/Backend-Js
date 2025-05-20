@@ -6,8 +6,8 @@ const router = Router();
 
 router.route("/register").post(
     upload.fields([
-    { name: "avatar", maxCount: 1 }
-    , { name: "coverImage", maxCount: 1 }
+        { name: "avatar", maxCount: 1 }
+        , { name: "coverImage", maxCount: 1 }
     ])
     , registerUser
 );
@@ -24,5 +24,5 @@ router.route("/register").post(
 //     console.log("Login route hit");
 //     res.send("Login test");
 //   });
-  
+
 export default router; 
