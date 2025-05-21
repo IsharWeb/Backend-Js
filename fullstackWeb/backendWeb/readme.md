@@ -160,11 +160,5 @@ Edit
 
 ---
 
-✅ If you say **"yes"**, I’ll now write the matching `README.md` for your **frontend (Vite + React + Tailwind)** with the same clarity and structure.
-
-
-
-
-
 
 
