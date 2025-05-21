@@ -24,10 +24,10 @@ const uploadFileOnCloudinary = async (filePath) => {
     return null;
   } finally {
     // Always delete temp file (success or error)
-    // fs.unlink(filePath, (err) => {
-    //   if (err) console.error("❌ Failed to delete temp file:", err);
-    //   else console.log("🗑️ Temp file deleted:", filePath);
-    // });
+    fs.unlink(filePath, (err) => {
+      if (err) console.error("❌ Failed to delete temp file:", err);
+      else console.log("🗑️ Temp file deleted succesfully :", filePath);
+    });
   }
 };
 
