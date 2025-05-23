@@ -1,4 +1,5 @@
-import { Home, About, Contact } from '../pages/index';
+import React from 'react';
+import { Home, About, Contact } from '../pages/Index';
 import { Routes, Route } from "react-router-dom";
 
 function routes() {
