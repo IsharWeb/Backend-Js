@@ -1,13 +1,15 @@
 import React from 'react';
-import Routes from './routes/Routes';
+import {Navbar} from './components/Index';
 
 function App() {
+  const isLoggedIn = true; // Replace with actual auth logic
 
   return (
     <>
-        <Routes/>
+      {/* <Navbar isLoggedIn={isLoggedIn} /> */}
+      {/* <Outlet /> or your page content */}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
