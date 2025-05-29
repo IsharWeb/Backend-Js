@@ -4,4 +4,9 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+ 
+  darkMode: 'class',
+  theme: {
+    extend: {}
+}
 })
