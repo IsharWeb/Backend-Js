@@ -18,15 +18,15 @@ const Sidebar = () => {
   };
 
   const menuItems = [
-  { name: 'Home', icon: <HomeIcon className="w-5 h-5" /> },
-  { name: 'Explore', icon: <MagnifyingGlassIcon className="w-5 h-5" /> },
-  { name: 'Subscriptions', icon: <TvIcon className="w-5 h-5" /> },
-  { name: 'Library', icon: <BookOpenIcon className="w-5 h-5" /> },
-  { name: 'History', icon: <ClockIcon className="w-5 h-5" /> },
-  { name: 'Upload Video', icon: <ArrowUpTrayIcon className="w-5 h-5" /> },
-  { name: 'Dashboard', icon: <ChartBarIcon className="w-5 h-5" /> },
-  { name: 'Users', icon: <UsersIcon className="w-5 h-5" /> },
-];
+    { name: 'Home', icon: <HomeIcon className="w-5 h-5" /> },
+    { name: 'Explore', icon: <MagnifyingGlassIcon className="w-5 h-5" /> },
+    { name: 'Subscriptions', icon: <TvIcon className="w-5 h-5" /> },
+    { name: 'Library', icon: <BookOpenIcon className="w-5 h-5" /> },
+    { name: 'History', icon: <ClockIcon className="w-5 h-5" /> },
+    { name: 'Upload Video', icon: <ArrowUpTrayIcon className="w-5 h-5" /> },
+    { name: 'Dashboard', icon: <ChartBarIcon className="w-5 h-5" /> },
+    { name: 'Users', icon: <UsersIcon className="w-5 h-5" /> },
+  ];
 
   return (
     <div className="flex h-screen bg-gray-100">
@@ -59,17 +59,17 @@ const Sidebar = () => {
       </button>
 
       {/* Sidebar */}
-  <div
-  className={`fixed top-0 left-0 h-full w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out z-40 rounded-r-2xl
+      <div
+        className={`fixed top-0 left-0 h-full w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out z-40 rounded-r-2xl
     ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
->
+      >
         <div className="p-4 text-lg font-bold">MyTube</div>
         <nav className="flex flex-col space-y-2 p-4">
           {menuItems.map((item) => (
             <a
               key={item.name}
               href="#"
-className="flex items-center px-3 py-2 rounded-lg hover:bg-slate-100 transition"
+              className="flex items-center px-3 py-2 rounded-lg hover:bg-slate-100 transition"
             >
               <span className="text-xl mr-3">{item.icon}</span>
               <span className="text-sm font-medium">{item.name}</span>
