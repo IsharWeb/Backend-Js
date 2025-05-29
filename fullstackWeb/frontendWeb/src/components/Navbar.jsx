@@ -1,46 +1,53 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import Sidebar from './SideBar';
+import {
+  Bars3Icon,
+  MagnifyingGlassIcon,
+  MicrophoneIcon,
+  VideoCameraIcon,
+  BellIcon,
+  UserCircleIcon,
+} from '@heroicons/react/24/outline';
 
-const Navbar = ({ isLoggedIn }) => {
-  const navLinkStyles = ({ isActive }) =>
-    isActive
-      ? 'text-blue-600 font-semibold'
-      : 'text-gray-700 hover:text-blue-600';
+const Navbar = () => {
 
   return (
-    <nav className="bg-white border-b shadow-sm">
-      <div className="container mx-auto px-4 py-3 flex justify-between items-center">
+    <>
+    <nav className="flex items-center justify-between px-4 py-2 bg-white shadow-md sticky top-0 z-50">
+      {/* Left: Menu + Logo */}
+      <div className="flex items-center gap-4">
+        {/* <Bars3Icon className="w-6 h-6 cursor-pointer" /> */}
+        {/* <img
+          src="https://www.logo.wine/a/logo/YouTube/YouTube-Logo.wine.svg"
+          alt="YouTube"
+          className="h-6 m-20px"
+        /> */}
+      </div>
 
-        {/* Logo/Brand */}
-        <NavLink to="/" className="text-xl font-bold text-blue-600">
-          Ishar Web
-        </NavLink>
+      {/* Middle: Search Bar */}
+      <div className="flex items-center flex-1 max-w-xl mx-4">
+        <input
+          type="text"
+          placeholder="Search"
+          className="flex-grow px-4 py-1 border border-gray-300 rounded-l-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+        />
+        <button className="px-4 py-1 bg-gray-100 border border-gray-300 rounded-r-full">
+          <MagnifyingGlassIcon className="w-5 h-5" />
+        </button>
+        <button className="ml-3 p-2 bg-gray-100 rounded-full hover:bg-gray-200">
+          <MicrophoneIcon className="w-5 h-5" />
+        </button>
+      </div>
 
-        {/* Nav Links */}
-        <div className="space-x-4 flex items-center">
-          <NavLink to="/" className={navLinkStyles}>Home</NavLink>
-          <NavLink to="/about" className={navLinkStyles}>About</NavLink>
-          <NavLink to="/contact" className={navLinkStyles}>Contact</NavLink>
-
-          {/* Conditional Button */}
-          {isLoggedIn ? (
-            <NavLink
-              to="/upload"
-              className="px-4 py-1 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition"
-            >
-              Upload Video
-            </NavLink>
-          ) : (
-            <NavLink
-              to="/signin"
-              className="px-4 py-1 bg-gray-100 text-gray-800 rounded-full hover:bg-gray-200 transition"
-            >
-              Sign in
-            </NavLink>
-          )}
-        </div>
+      {/* Right: Icons */}
+      <div className="flex items-center gap-4">
+        <VideoCameraIcon className="w-6 h-6 cursor-pointer" />
+        <BellIcon className="w-6 h-6 cursor-pointer" />
+        <UserCircleIcon className="w-8 h-8 cursor-pointer text-gray-600" />
       </div>
     </nav>
+      <Sidebar />
+     </>
   );
 };
 
