@@ -29,10 +29,10 @@ const Sidebar = () => {
   ];
 
   return (
-    <div className="flex h-screen bg-gray-100">
+    <div className="flex h-screen py-20  bg-gray-100">
       {/* Always Visible Toggle Button */}
       <button
-        className="absolute hover:bg-slate-100 top-4 left-4 z-50 text-gray-800"
+        className="absolute  hover:bg-slate-100 top-4 left-4 z-52 text-gray-800"
         onClick={toggleSidebar}
       >
         <svg
@@ -60,7 +60,7 @@ const Sidebar = () => {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-full w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out z-40 rounded-r-2xl
+        className={`fixed top-0 left-0 h-full  w-64 bg-white text-gray-900 transform transition-transform duration-300 ease-in-out py-10 z-50 rounded-r-2xl
     ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}
       >
         <div className="p-4 text-lg font-bold">MyTube</div>
