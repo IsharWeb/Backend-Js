@@ -29,7 +29,7 @@ const registerUser = AsyncHandler(async (req, res) => {
       $or: [{ username }, { email }]
     }
   )
-  console.log("User Existed  Data = ", existingUser);
+  // console.log("User Existed  Data = ", existingUser);
 
   if (existingUser) throw new ApiError(400, "User arlady existed")
 
