@@ -122,6 +122,50 @@ const registerUser = AsyncHandler(async (req, res) => {
 });
 
 
+
+
+
+// Login func
+const loginUser = AsyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  // 1. Check for empty fields
+  if (!email || !password) {
+    throw new ApiError(400, "Email and Password are required");
+  }
+
+  // 2. Find user by email
+  const user = await User.findOne({ email });
+  if (!user) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // 3. Validate password
+  const isPasswordValid = await user.isPasswordCorrect(password);
+  if (!isPasswordValid) {
+    throw new ApiError(401, "Invalid password");
+  }
+
+  // 4. Remove sensitive data before responding
+  const userInfo = {
+    _id: user._id,
+    username: user.username,
+    fullName: user.fullName,
+    email: user.email,
+    avatar: user.avatar,
+    coverImage: user.coverImage,
+    bio: user.bio
+  };
+
+  // 5. Optionally login via session (if using session)
+  req.session.user = userInfo;
+
+  // 6. Response
+  return res.status(200).json(new ApiResponse(userInfo, 200, "Login successful"));
+});
+
+
+
 // logoout func
 
 const logoutUser = AsyncHandler(async (req, res) => {
@@ -137,4 +181,4 @@ const logoutUser = AsyncHandler(async (req, res) => {
 });
 
 
-export { registerUser, logoutUser };
+export { registerUser, logoutUser, loginUser};
