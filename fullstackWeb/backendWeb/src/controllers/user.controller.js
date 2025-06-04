@@ -121,4 +121,20 @@ const registerUser = AsyncHandler(async (req, res) => {
 
 });
 
-export { registerUser };
+
+// logoout func
+
+const logoutUser = AsyncHandler(async (req, res) => {
+  // If using sessions
+  req.session.destroy((err) => {
+    if (err) {
+      throw new ApiError(500, "Failed to logout");
+    }
+
+    res.clearCookie("connect.sid"); // If using express-session
+    return res.status(200).json(new ApiResponse(null, 200, "Logout successful"));
+  });
+});
+
+
+export { registerUser, logoutUser };
