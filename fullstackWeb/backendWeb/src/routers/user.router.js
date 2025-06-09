@@ -16,7 +16,7 @@ router.route("/register").post(
 );
 
 router.route("/logout").post(logoutUser)
-router.route("/logub").post(loginUser)
+router.route("/login").post(loginUser)
 
 
 
