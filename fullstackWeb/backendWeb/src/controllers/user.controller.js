@@ -5,7 +5,7 @@ import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateAccReffTonkens = async (userId) {
+const generateAccReffTonkens = async (userId) = {_ 
 
   try {
 
