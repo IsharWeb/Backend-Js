@@ -5,16 +5,16 @@ import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateAccReffTonkens = async (userId) = {_ 
+const generateAccReffTonkens = async (userId) => {_ 
 
   try {
-
     const user = await User.findById(userId)
+
     const accessToken = user.generateAccToken()
     const refrashToken = user.generateRefToken()
 
     user.refrashToken = refrashToken
-    await user.save({ validateBeforeSave: fales })
+    await user.save({ validateBeforeSave: false })
 
     return { accessToken, refrashToken }
 
@@ -148,6 +148,7 @@ const registerUser = AsyncHandler(async (req, res) => {
 
 
 // Login func
+
 const loginUser = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
 

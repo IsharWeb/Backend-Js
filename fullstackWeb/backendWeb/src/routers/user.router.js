@@ -2,6 +2,7 @@ import { Router } from "express";
 import { registerUser } from "../controllers/user.controller.js";
 import { loginUser } from "../controllers/user.controller.js";
 import { logoutUser } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlwares/auth.middlware.js";
 
 import { upload } from "../middlwares/multer.middlware.js";
 
@@ -15,7 +16,7 @@ router.route("/register").post(
     , registerUser
 );
 
-router.route("/logout").post(logoutUser)
+router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/login").post(loginUser)
 
 
