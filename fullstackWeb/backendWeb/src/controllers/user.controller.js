@@ -225,15 +225,45 @@ const loginUser = AsyncHandler(async (req, res) => {
 // logoout fun
 
 const logoutUser = AsyncHandler(async (req, res) => {
-  // If using sessions
-  req.session.destroy((err) => {
-    if (err) {
-      throw new ApiError(500, "Failed to logout");
-    }
 
-    res.clearCookie("connect.sid"); // If using express-session
-    return res.status(200).json(new ApiResponse(null, 200, "Logout successful"));
+   await User.findByIdAndUpdate(
+    req.user._id,
+    {
+      $set: {
+        refrashToken: undefined,  // Make sure spelling matches your schema
+      },
+    },
+    { new: true }
+  );
+
+  // Optionally clear cookies
+  res.clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Only in production
+    sameSite: "strict",
   });
+
+  res.clearCookie("refrashToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+  });
+
+  res.status(200).json({
+    success: true,
+    message: "User logged out successfully",
+  });
+
+
+  // If using sessions
+  // req.session.destroy((err) => {
+  //   if (err) {
+  //     throw new ApiError(500, "Failed to logout");
+  //   }
+
+  //   res.clearCookie("connect.sid"); // If using express-session
+  //   return res.status(200).json(new ApiResponse(null, 200, "Logout successful"));
+  // });
 });
 
 
