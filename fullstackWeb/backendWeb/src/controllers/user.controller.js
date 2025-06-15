@@ -5,6 +5,26 @@ import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
+const generateAccReffTonkens = async (userId) {
+
+  try {
+
+    const user = await User.findById(userId)
+    const accessToken = user.generateAccToken()
+    const refrashToken = user.generateRefToken()
+
+    user.refrashToken = refrashToken
+    await user.save({ validateBeforeSave: fales })
+
+    return { accessToken, refrashToken }
+
+  } catch (error) {
+
+    throw new ApiError(501, "generateAccReffTonkens error in user login controller")
+
+  }
+
+}
 
 const registerUser = AsyncHandler(async (req, res) => {
   // console.log("Regester form existing")
@@ -98,28 +118,30 @@ const registerUser = AsyncHandler(async (req, res) => {
 
   return response
 
-  //   if (!name || !email || !password) {
-  //     return res.status(400).json({ message: "All fields are required" });
-  //   }
-
-  //   // Check if user already exists
-  //   const existingUser = await User.findOne({ email });
-  //   if (existingUser) {
-  //     return res.status(400).json({ message: "User already exists" });
-  //   }
-
-  //   // Create new user (hash password before saving in production)
-  //   const newUser = new User({
-  //     name,
-  //     email,
-  //     password,  // IMPORTANT: hash password before saving in real app
-  //   });
-
-  //   await newUser.save();
-
-  //   res.status(201).json({ message: "User registered successfully" });
 
 });
+
+
+//   if (!name || !email || !password) {
+//     return res.status(400).json({ message: "All fields are required" });
+//   }
+
+//   // Check if user already exists
+//   const existingUser = await User.findOne({ email });
+//   if (existingUser) {
+//     return res.status(400).json({ message: "User already exists" });
+//   }
+
+//   // Create new user (hash password before saving in production)
+//   const newUser = new User({
+//     name,
+//     email,
+//     password,  // IMPORTANT: hash password before saving in real app
+//   });
+
+//   await newUser.save();
+
+//   res.status(201).json({ message: "User registered successfully" });
 
 
 
@@ -129,44 +151,77 @@ const registerUser = AsyncHandler(async (req, res) => {
 const loginUser = AsyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
-  // 1. Check for empty fields
-  if (!email || !password) {
-    throw new ApiError(400, "Email and Password are required");
+  // Check for empty fields
+  if (!email) {
+    throw new ApiError(400, "Email are required");
   }
 
-  // 2. Find user by email
+  // Find user by email
   const user = await User.findOne({ email });
   if (!user) {
     throw new ApiError(404, "User not found");
   }
 
-  // 3. Validate password
+  //  Validate password
   const isPasswordValid = await user.isPasswordCorrect(password);
   if (!isPasswordValid) {
     throw new ApiError(401, "Invalid password");
   }
 
-  // 4. Remove sensitive data before responding
-  const userInfo = {
-    _id: user._id,
-    username: user.username,
-    fullName: user.fullName,
-    email: user.email,
-    avatar: user.avatar,
-    coverImage: user.coverImage,
-    bio: user.bio
-  };
+  // generate acc ref tokens
 
-  // 5. Optionally login via session (if using session)
-  req.session.user = userInfo;
+  const { accessToken, refrashToken } = await generateAccReffTonkens(user._id)
 
-  // 6. Response
-  return res.status(200).json(new ApiResponse(userInfo, 200, "Login successful"));
+  // logedin user
+
+  const logedInUser = await user.findById(user._id).select("-password -refrashToken")
+
+  // secuer options
+
+  const options = {
+    httponly: true,
+    secure: true,
+  }
+
+  // response
+
+  return res.status(200)
+    .cookie("accessToken", accessToken, options)
+    .cookie("refrashToken", refrashToken, options)
+    .json(
+      new ApiResponse(
+        {
+          user: logedInUser, accessToken, refrashToken,
+        },
+        200,
+        "user Loged In successfully"
+      )
+    )
+
+  // errors
+  // //  Remove sensitive data before responding
+  // const userInfo = {
+  //   _id: user._id,
+  //   username: user.username,
+  //   fullName: user.fullName,
+  //   email: user.email,
+  //   avatar: user.avatar,
+  //   coverImage: user.coverImage,
+  //   bio: user.bio
+  // };
+
+  // // 5. Optionally login via session (if using session)
+  // req.session.user = userInfo;
+
+  // // 6. Response
+  // return res.status(200).json(new ApiResponse(userInfo, 200, "Login successful"));
+
+
 });
 
 
 
-// logoout func
+// logoout fun
 
 const logoutUser = AsyncHandler(async (req, res) => {
   // If using sessions
@@ -181,4 +236,4 @@ const logoutUser = AsyncHandler(async (req, res) => {
 });
 
 
-export { registerUser, logoutUser, loginUser};
+export { registerUser, logoutUser, loginUser };
