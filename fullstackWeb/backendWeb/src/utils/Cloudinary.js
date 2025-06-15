@@ -14,18 +14,19 @@ const uploadFileOnCloudinary = async (filePath) => {
 
   try {
     const response = await cloudinary.uploader.upload(filePath, {
-      resource_type: "auto", 
+      resource_type: "auto",
     });
-
     console.log("✅ Uploaded to Cloudinary:", response.secure_url);
     return response;
   } catch (error) {
     console.error("❌ Cloudinary upload failed:", error);
+    fs.unlinkSync(filePath)
     return null;
   } finally {
     // Always delete temp file (success or error)
-    fs.unlink(filePath, (err) => {
-      if (err) console.error("❌ Failed to delete temp file:", err);
+    fs.unlinkSync(filePath, (err) => {
+      if (err) console.error("❌ Failed to delete temp file:", err)
+
       else console.log("🗑️ Temp file deleted succesfully :", filePath);
     });
   }
