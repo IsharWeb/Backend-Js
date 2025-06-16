@@ -5,7 +5,8 @@ import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
-const generateAccReffTonkens = async (userId) => {_ 
+const generateAccReffTonkens = async (userId) => {
+  _
 
   try {
     const user = await User.findById(userId)
@@ -226,34 +227,25 @@ const loginUser = AsyncHandler(async (req, res) => {
 
 const logoutUser = AsyncHandler(async (req, res) => {
 
-   await User.findByIdAndUpdate(
+  await User.findByIdAndUpdate(
     req.user._id,
     {
       $set: {
-        refrashToken: undefined, 
+        refrashToken: undefined,
       },
     },
     { new: true }
   );
+  const options = {
+    httponly: true,
+    secure: true,
+  }
 
-  // Optionally clear cookies
-  res.clearCookie("accessToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production", // Only in production
-    sameSite: "strict",
-  });
-
-  res.clearCookie("refrashToken", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
-  });
-
-  res.status(200).json({
-    success: true,
-    message: "User logged out successfully",
-  });
-
+  return res
+  .status(200)
+  .clearcookie("accessToken", options)
+  .clearcookie("refrashToken", options)
+  .json(new ApiResponse({}, 200, "user Successfully Logout"))
 
   // If using sessions
   // req.session.destroy((err) => {
