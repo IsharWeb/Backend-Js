@@ -230,7 +230,7 @@ const logoutUser = AsyncHandler(async (req, res) => {
     req.user._id,
     {
       $set: {
-        refrashToken: undefined,  // Make sure spelling matches your schema
+        refrashToken: undefined, 
       },
     },
     { new: true }

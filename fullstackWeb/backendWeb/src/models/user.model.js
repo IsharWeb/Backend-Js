@@ -81,6 +81,9 @@ const userSchema = new mongoose.Schema(
     },
     refrashToken: {
       type: String,
+    },
+     accessToken: {
+      type: String,
     }
   },
   {
