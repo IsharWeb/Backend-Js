@@ -26,9 +26,7 @@ router.route("/login").post(loginUser)
 router.route("/refrash-token").post(refreshAccessToken)
 router.post("/change-password", verifyToken, changePassword);
 router.put("/update-profile", verifyToken, updateProfile);
-router.get("/channel/:username", getUserChannelProfile);
-
-
+router.get("/channel/:username",verifyToken, getUserChannelProfile);
 
 
 // error
