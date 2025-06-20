@@ -4,7 +4,9 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
-import {jwt} from "jsonwebtoken"
+import { jwt } from "jsonwebtoken"
+import mongoose from "mongoose";
+import { Video } from "../models/video.model.js";
 
 const generateAccReffTonkens = async (userId) => {
 
@@ -298,7 +300,7 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
 })
 
 // change password
-export const changePassword = async (req, res) => {
+const changePassword = async (req, res) => {
   try {
     const userId = req.user._id;
     const { oldPassword, newPassword } = req.body;
@@ -333,7 +335,7 @@ export const changePassword = async (req, res) => {
 
 
 // update profile
-export const updateProfile = async (req, res) => {
+const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const {
@@ -393,6 +395,122 @@ export const updateProfile = async (req, res) => {
   }
 };
 
+// user Channel Profile
+// const getUserChannelProfile = async (req, res) => {
+//   try {
+//     const { username } = req.params;
+
+//     if (!username) {
+//       return res.status(400).json({ message: "Username is required." });
+//     }
+
+//     const user = await User.findOne({ username, isDeleted: false })
+//       .select(
+//         "username fullName channelName bio avatar coverImage socialLinks subscribers createdAt"
+//       )
+//       .populate("subscribers", "_id username");
+
+//     if (!user) {
+//       return res.status(404).json({ message: "Channel not found." });
+//     }
+
+//     const channelProfile = {
+//       username: user.username,
+//       fullName: user.fullName,
+//       channelName: user.channelName || user.username,
+//       bio: user.bio || "",
+//       avatar: user.avatar || "",
+//       coverImage: user.coverImage || "",
+//       socialLinks: user.socialLinks || {},
+//       subscriberCount: user.subscribers.length,
+//       joinedAt: user.createdAt,
+//     };
+
+//     return res.status(200).json({
+//       message: "Channel profile fetched successfully.",
+//       profile: channelProfile,
+//     });
+//   } catch (error) {
+//     console.error("Error fetching channel profile:", error);
+//     return res.status(500).json({ message: "Internal server error." });
+//   }
+// };
+
+ const getUserChannelProfile = async (req, res) => {
+  try {
+    const { username } = req.params;
+    const viewerId = req.user?._id; // Optional: logged-in viewer
+
+    const pipeline = [
+      {
+        $match: {
+          username: username,
+          isDeleted: false,
+        },
+      },
+      {
+        $lookup: {
+          from: "subscribers",
+          localField: "_id",
+          foreignField: "channel",
+          as: "subscriberDocs",
+        },
+      },
+      {
+        $addFields: {
+          subscriberCount: { $size: "$subscriberDocs" },
+        },
+      },
+      {
+        $lookup: {
+          from: "videos",
+          localField: "_id",
+          foreignField: "owner",
+          as: "videos",
+        },
+      },
+      {
+        $addFields: {
+          videoCount: { $size: "$videos" },
+          isSubscribed: viewerId
+            ? {
+                $in: [new mongoose.Types.ObjectId(viewerId), "$subscribers"],
+              }
+            : false,
+        },
+      },
+      {
+        $project: {
+          username: 1,
+          fullName: 1,
+          channelName: 1,
+          bio: 1,
+          avatar: 1,
+          coverImage: 1,
+          socialLinks: 1,
+          createdAt: 1,
+          subscriberCount: 1,
+          videoCount: 1,
+          isSubscribed: 1,
+        },
+      },
+    ];
+
+    const result = await User.aggregate(pipeline);
+
+    if (!result.length) {
+      return res.status(404).json({ message: "Channel not found" });
+    }
+
+    return res.status(200).json({
+      message: "Channel profile loaded",
+      profile: result[0],
+    });
+  } catch (err) {
+    console.error("Channel profile error:", err);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 
 
-export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, updateProfile,  };
+export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, updateProfile, getUserChannelProfile, };
