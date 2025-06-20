@@ -19,12 +19,6 @@ router.route("/register").post(
 router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/login").post(loginUser)
 
-// Server test route
-router.get("/ping", (req, res) => {
-  console.log("📡 Ping route hit");
-  res.status(200).json({ message: "Server is alive 🚀" });
-});
-
 // router.post("/logout", verifyJWT, logoutUser);
 
 
