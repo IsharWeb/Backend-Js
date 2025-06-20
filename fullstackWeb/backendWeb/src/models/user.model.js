@@ -104,7 +104,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 userSchema.methods.generateAccToken = function () {
 
-  jwt.sign(
+ return jwt.sign(
     {
       _id: this._id,
       email: this.email,
@@ -120,7 +120,7 @@ userSchema.methods.generateAccToken = function () {
 }
 userSchema.methods.generateRefToken = function () {
 
-  jwt.sign(
+ return jwt.sign(
     {
       _id: this._id,
     },
