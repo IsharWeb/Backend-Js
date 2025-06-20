@@ -11,10 +11,11 @@ export const verifyJWT = AsyncHandler(async (req, _, next) => {
 
     console.log("🔐 Received Token:", token);
 
-    if (!token) {
-      console.log("❌ No token found");
-      throw new ApiError(401, "Unauthorized request");
+    if (!token || token === "process.env.ACCESS_TOKEN_SECRET") {
+      console.error("🚨 Invalid token string received:", token);
+      throw new ApiError(401, "Unauthorized token");
     }
+
 
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
     console.log("✅ Token Decoded:", decodedToken);

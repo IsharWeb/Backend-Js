@@ -6,7 +6,6 @@ import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 
 const generateAccReffTonkens = async (userId) => {
-  _
 
   try {
     const user = await User.findById(userId)
@@ -176,7 +175,8 @@ const loginUser = AsyncHandler(async (req, res) => {
 
   // logedin user
 
-  const logedInUser = await user.findById(user._id).select("-password -refrashToken")
+  const logedInUser = await User.findById(user._id).select("-password -refrashToken");
+
 
   // secuer options
 
