@@ -4,6 +4,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { User } from "../models/user.model.js";
 import { uploadFileOnCloudinary } from "../utils/Cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import {jwt} from "jsonwebtoken"
 
 const generateAccReffTonkens = async (userId) => {
 
@@ -179,7 +180,6 @@ const loginUser = AsyncHandler(async (req, res) => {
 
 
   // secuer options
-
   const options = {
     httponly: true,
     secure: true,
@@ -221,8 +221,6 @@ const loginUser = AsyncHandler(async (req, res) => {
 
 });
 
-
-
 // logoout fun
 
 const logoutUser = AsyncHandler(async (req, res) => {
@@ -250,6 +248,7 @@ const logoutUser = AsyncHandler(async (req, res) => {
     .json(new ApiResponse(200, {}, "User logged Out"))
 })
 
+// endpoing AccandRrefTokens
 const refreshAccessToken = AsyncHandler(async (req, res) => {
   const incomingRefreshToken = req.cookies.refrashToken || req.body.refrashToken
 
@@ -298,4 +297,6 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
 
 })
 
-export { registerUser, logoutUser, loginUser };
+
+
+export { registerUser, logoutUser, loginUser, refreshAccessToken , };
