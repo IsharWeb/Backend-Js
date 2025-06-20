@@ -55,13 +55,32 @@ const registerUser = AsyncHandler(async (req, res) => {
   if (existingUser) throw new ApiError(400, "User arlady existed")
 
   // Check img was upload or not
-  const avtarLocalPath = req.files?.avatar[0]?.path;
-  console.log("Avtar Img url adn all datat files = ", avtarLocalPath);
 
-  const coverImageLocalPath = req.files?.coverImage?.[0]?.path;
-  console.log("Avatar Img url", coverImageLocalPath);
+    const avatarLocalPath = Array.isArray(req.files?.avatar) ? req.files.avatar[0]?.path : "";
+  const coverImageLocalPath = Array.isArray(req.files?.coverImage) ? req.files.coverImage[0]?.path : "";
 
-  let coverImage = { url: "" }; // default empty
+  // Avatar is required
+  if (!avatarLocalPath) {
+    throw new ApiError(400, "Avatar image is required");
+  }
+ // Upload avatar
+  const avatar = await uploadFileOnCloudinary(avatarLocalPath);
+  if (!avatar?.url) {
+    throw new ApiError(400, "Failed to upload avatar image");
+  }
+
+   // Upload cover image (optional)
+  let coverImage = { url: "" };
+  if (coverImageLocalPath) {
+    coverImage = await uploadFileOnCloudinary(coverImageLocalPath);
+    if (!coverImage?.url) {
+      console.warn("⚠️ Cover image upload failed. Saving as empty string.");
+      coverImage.url = "";
+    }
+  }
+
+
+
 
   // Only upload if file was provided
   if (coverImageLocalPath) {
@@ -79,11 +98,6 @@ const registerUser = AsyncHandler(async (req, res) => {
   // if (coverImageLocalPath.length === "")              
   //  chatgpt pls write code here if cover img is undefind or user nor upload to not show error and add in userstore coverimg emty string
 
-
-  if (!avtarLocalPath) throw new ApiError(400, "Avatar Img is requird")
-
-  const avatar = await uploadFileOnCloudinary(avtarLocalPath)
-  if (!avatar) throw new ApiError(400, "Avatar Img is requird")
 
   //  Create user object 
   const userStore = await User.create(
