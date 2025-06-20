@@ -56,20 +56,20 @@ const registerUser = AsyncHandler(async (req, res) => {
 
   // Check img was upload or not
 
-    const avatarLocalPath = Array.isArray(req.files?.avatar) ? req.files.avatar[0]?.path : "";
+  const avatarLocalPath = Array.isArray(req.files?.avatar) ? req.files.avatar[0]?.path : "";
   const coverImageLocalPath = Array.isArray(req.files?.coverImage) ? req.files.coverImage[0]?.path : "";
 
   // Avatar is required
   if (!avatarLocalPath) {
     throw new ApiError(400, "Avatar image is required");
   }
- // Upload avatar
+  // Upload avatar
   const avatar = await uploadFileOnCloudinary(avatarLocalPath);
   if (!avatar?.url) {
     throw new ApiError(400, "Failed to upload avatar image");
   }
 
-   // Upload cover image (optional)
+  // Upload cover image (optional)
   let coverImage = { url: "" };
   if (coverImageLocalPath) {
     coverImage = await uploadFileOnCloudinary(coverImageLocalPath);
@@ -78,20 +78,6 @@ const registerUser = AsyncHandler(async (req, res) => {
       coverImage.url = "";
     }
   }
-
-
-
-
-  // Only upload if file was provided
-  if (coverImageLocalPath) {
-    coverImage = await uploadFileOnCloudinary(coverImageLocalPath);
-    if (!coverImage) {
-      console.warn("Cover image upload failed, saving as empty string");
-      coverImage = { url: "" };
-    }
-  }
-
-
 
   // const coverImageLocalPath = req.files?.coverImage[0]?.path;
   // console.log("Avatar Img url", coverImageLocalPath);
@@ -104,11 +90,12 @@ const registerUser = AsyncHandler(async (req, res) => {
     {
       username: username.toLowerCase(),
       avatar: avatar.url,
-      coverImage: coverImage?.url || "",
+      coverImage: coverImage.url,
       fullName,
       email,
       bio,
       password,
+
     }
   )
   console.log("User data or UserStore = ", userStore);
@@ -123,8 +110,7 @@ const registerUser = AsyncHandler(async (req, res) => {
   // response
 
   const response = await res.status(201).json(
-    new ApiResponse(findUser, 200, "User Register succesfully")
-
+    new ApiResponse(findUser, 200, "User registered successfully")
     // my err
     // new ApiResponse(userStore, 200, "User Register succesfully" )
     // throw new ApiResponse(findUser, 200, "User Register succesfully" )
@@ -287,7 +273,7 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
       throw new ApiError(401, "Refresh token is expired or used")
 
     }
-      
+
     const options = {
       httpOnly: true,
       secure: true
