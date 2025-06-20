@@ -436,81 +436,71 @@ const updateProfile = async (req, res) => {
 //   }
 // };
 
- const getUserChannelProfile = async (req, res) => {
-  try {
+ const getUserChannelProfile = asyncHandler(async (req, res) => {
     const { username } = req.params;
-    const viewerId = req.user?._id; // Optional: logged-in viewer
+
+    if (!username?.trim()) {
+        throw new ApiError(400, "Username is missing");
+    }
 
     const pipeline = [
-      {
-        $match: {
-          username: username,
-          isDeleted: false,
+        {
+            $match: {
+                username: username.toLowerCase()
+            }
         },
-      },
-      {
-        $lookup: {
-          from: "subscribers",
-          localField: "_id",
-          foreignField: "channel",
-          as: "subscriberDocs",
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "channel",
+                as: "subscribers"
+            }
         },
-      },
-      {
-        $addFields: {
-          subscriberCount: { $size: "$subscriberDocs" },
+        {
+            $lookup: {
+                from: "subscriptions",
+                localField: "_id",
+                foreignField: "subscriber",
+                as: "subscribedTo"
+            }
         },
-      },
-      {
-        $lookup: {
-          from: "videos",
-          localField: "_id",
-          foreignField: "owner",
-          as: "videos",
+        {
+            $addFields: {
+                subscribersCount: { $size: "$subscribers" },
+                channelsSubscribedToCount: { $size: "$subscribedTo" },
+                isSubscribed: req.user?._id
+                    ? {
+                        $in: [new mongoose.Types.ObjectId(req.user._id), "$subscribers.subscriber"]
+                    }
+                    : false
+            }
         },
-      },
-      {
-        $addFields: {
-          videoCount: { $size: "$videos" },
-          isSubscribed: viewerId
-            ? {
-                $in: [new mongoose.Types.ObjectId(viewerId), "$subscribers"],
-              }
-            : false,
-        },
-      },
-      {
-        $project: {
-          username: 1,
-          fullName: 1,
-          channelName: 1,
-          bio: 1,
-          avatar: 1,
-          coverImage: 1,
-          socialLinks: 1,
-          createdAt: 1,
-          subscriberCount: 1,
-          videoCount: 1,
-          isSubscribed: 1,
-        },
-      },
+        {
+            $project: {
+                fullName: 1,
+                username: 1,
+                avatar: 1,
+                coverImage: 1,
+                email: 1,
+                subscribersCount: 1,
+                channelsSubscribedToCount: 1,
+                isSubscribed: 1
+            }
+        }
     ];
 
     const result = await User.aggregate(pipeline);
 
     if (!result.length) {
-      return res.status(404).json({ message: "Channel not found" });
+        throw new ApiError(404, "Channel not found");
     }
 
-    return res.status(200).json({
-      message: "Channel profile loaded",
-      profile: result[0],
-    });
-  } catch (err) {
-    console.error("Channel profile error:", err);
-    return res.status(500).json({ message: "Internal server error" });
-  }
-};
+    return res.status(200).json(
+        new ApiResponse(200, result[0], "User channel profile fetched successfully")
+    );
+});
+
 
 
 export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, updateProfile, getUserChannelProfile, };
