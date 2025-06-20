@@ -332,5 +332,67 @@ export const changePassword = async (req, res) => {
 };
 
 
+// update profile
+export const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const {
+      email,
+      username,
+      fullName,
+      channelName,
+      bio,
+      avatar,
+      coverImage,
+      socialLinks
+    } = req.body;
 
-export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, };
+    const user = await User.findById(userId);
+    if (!user || user.isDeleted) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if email is changing and already taken
+    if (email && email !== user.email) {
+      const emailExists = await User.findOne({ email });
+      if (emailExists) {
+        return res.status(400).json({ message: "Email already in use." });
+      }
+      user.email = email;
+    }
+
+    // Check if username is changing and already taken
+    if (username && username !== user.username) {
+      const usernameExists = await User.findOne({ username });
+      if (usernameExists) {
+        return res.status(400).json({ message: "Username already taken." });
+      }
+      user.username = username;
+    }
+
+    // Update other fields
+    if (fullName) user.fullName = fullName;
+    if (channelName) user.channelName = channelName;
+    if (bio) user.bio = bio;
+    if (avatar) user.avatar = avatar;
+    if (coverImage) user.coverImage = coverImage;
+
+    if (socialLinks) {
+      user.socialLinks = {
+        ...user.socialLinks,
+        ...socialLinks, // partial update (e.g., only facebook)
+      };
+    }
+
+    await user.save();
+
+    return res.status(200).json({ message: "Profile updated successfully", user });
+  } catch (error) {
+    console.error("Profile update error:", error);
+    return res.status(500).json({ message: "Something went wrong." });
+  }
+};
+
+
+
+export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, updateProfile,  };
