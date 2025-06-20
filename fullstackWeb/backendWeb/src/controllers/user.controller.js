@@ -226,7 +226,6 @@ const loginUser = AsyncHandler(async (req, res) => {
 // logoout fun
 
 const logoutUser = AsyncHandler(async (req, res) => {
-
   await User.findByIdAndUpdate(
     req.user._id,
     {
@@ -257,6 +256,5 @@ const logoutUser = AsyncHandler(async (req, res) => {
   //   return res.status(200).json(new ApiResponse(null, 200, "Logout successful"));
   // });
 });
-
 
 export { registerUser, logoutUser, loginUser };

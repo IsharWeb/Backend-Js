@@ -32,6 +32,25 @@ app.use("/api/v1/user", userRouter)
 
 // http://localhost:5000/api/v1/user
 
+// router NOT pound errors
+// Handle unknown routes (404)
+app.use((req, res, next) => {
+  res.status(404).json({
+    success: false,
+    message: "Route not found",
+  });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error("🔥 Global Error Handler:", err.message);
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+});
+
 
 export { app };
 
