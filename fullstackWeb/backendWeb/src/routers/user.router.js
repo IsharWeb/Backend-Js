@@ -4,6 +4,8 @@ import { loginUser } from "../controllers/user.controller.js";
 import { logoutUser } from "../controllers/user.controller.js";
 import { verifyJWT } from "../middlwares/auth.middlware.js";
 import {refreshAccessToken} from "../controllers/user.controller.js"
+import {changePassword} from "../controllers/user.controller.js"
+
 
 import { upload } from "../middlwares/multer.middlware.js";
 
@@ -19,8 +21,10 @@ router.route("/register").post(
 
 router.route("/logout").post(verifyJWT, logoutUser)
 router.route("/login").post(loginUser)
-router.route("/refrash-token").post(refreshAccessToken)
 // router.post("/logout", verifyJWT, logoutUser);
+router.route("/refrash-token").post(refreshAccessToken)
+router.post("/change-password", verifyToken, changePassword);
+
 
 
 // error

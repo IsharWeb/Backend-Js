@@ -297,6 +297,40 @@ const refreshAccessToken = AsyncHandler(async (req, res) => {
 
 })
 
+// change password
+export const changePassword = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const { oldPassword, newPassword } = req.body;
+
+    // Input validation
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Both old and new passwords are required." });
+    }
+
+    // Find the user
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Check if the old password matches
+    const isMatch = await user.isPasswordCorrect(oldPassword);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Old password is incorrect." });
+    }
+
+    // Set new password
+    user.password = newPassword; // will be hashed in pre-save hook
+    await user.save();
+
+    return res.status(200).json({ message: "Password changed successfully." });
+  } catch (error) {
+    console.error("Change password error:", error);
+    res.status(500).json({ message: "Something went wrong." });
+  }
+};
 
 
-export { registerUser, logoutUser, loginUser, refreshAccessToken , };
+
+export { registerUser, logoutUser, loginUser, refreshAccessToken, changePassword, };
